@@ -5,7 +5,6 @@ try:
     from requests.auth import HTTPBasicAuth
 except ImportError:
     print('Requests module missing,please install Requests')
-APIToken = '42dc8d249b95eb359e68ebd1390b2c81d6c2f347ab5351d49acb751ac16f4206'
 BasicAuth = HTTPBasicAuth(APIToken, ' ')
 APIURL = "https://api.digitalocean.com/v2"
 
