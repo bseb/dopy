@@ -5,39 +5,40 @@ try:
     from requests.auth import HTTPBasicAuth
 except ImportError:
     print('Requests module missing,please install Requests')
-BasicAuth = HTTPBasicAuth(APIToken, ' ')
-APIURL = "https://api.digitalocean.com/v2"
 
 
 class dopy():
+    BasicAuth = HTTPBasicAuth(APIToken, ' ')
+    APIURL = "https://api.digitalocean.com/v2"
+
     def __init__(self, APIToken):
         self.APIToken = APIToken
-        self.DropletParms = {"name": "example",
-                             "region": "nyc3",
-                             "size": "512mb",
-                             "image": "centos-7-0-x64"}
 
     def GetAccountDetails(self):
-        ActInfo = r.get(APIURL + "/account", auth=BasicAuth)
+        ActInfo = r.get(self.APIURL + "/account", auth=self.BasicAuth)
         AccountDetail = ActInfo.json()
         return AccountDetail
 
     def GetDropletList(self):
-        List = r.get(APIURL + "/droplets", auth=BasicAuth)
+        List = r.get(self.APIURL + "/droplets", auth=self.BasicAuth)
         DropletList = List.json()
         return DropletList
 
     def GetAccountActions(self):
-        Actions = r.get(APIURL + "/actions", auth=BasicAuth)
+        Actions = r.get(self.APIURL + "/actions", auth=self.BasicAuth)
         ActionList = Actions.json()
         return ActionList
 
     def ListAvailableImages(self):
-        Images = r.get(APIURL + "/images?page=1&per_page=999&type=distribution", auth=BasicAuth)
+        Images = r.get(self.APIURL + "/images?page=1&per_page=999&type=distribution", auth=self.BasicAuth)
         AvailableImages = Images.json()
         return AvailableImages
 
-    def CreateDroplet(self):
-        Create = r.post(APIURL + "/droplets", auth=BasicAuth, params=self.DropletParms)
+    def CreateDroplet(self, name="example", region="nyc3", size="512mb",
+                      image="centos-7-0-x64", **kwargs):
+        parms = {"name": name, "region": region, "size": size, "image": image}
+        parms.update(kwargs)
+        Create = r.post(self.APIURL + "/droplets", auth=self.BasicAuth,
+                        parms=self.DropletParms)
         CreatedDroplet = Create.json()
         return CreatedDroplet
