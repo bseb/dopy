@@ -12,6 +12,10 @@ APIURL = "https://api.digitalocean.com/v2"
 class dopy():
     def __init__(self, APIToken):
         self.APIToken = APIToken
+        self.DropletParms = {"name": "example",
+                             "region": "nyc3",
+                             "size": "512mb",
+                             "image": "centos-7-0-x64"}
 
     def GetAccountDetails(self):
         ActInfo = r.get(APIURL + "/account", auth=BasicAuth)
@@ -34,10 +38,6 @@ class dopy():
         return AvailableImages
 
     def CreateDroplet(self):
-        self.DropletParms = {"name": "example",
-                             "region": "nyc3",
-                             "size": "512mb",
-                             "image": "centos-7-0-x64"}
         Create = r.post(APIURL + "/droplets", auth=BasicAuth, params=self.DropletParms)
         CreatedDroplet = Create.json()
         return CreatedDroplet
