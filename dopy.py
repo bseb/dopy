@@ -63,11 +63,32 @@ class dopy():
 
     def ListDropletBackups(self, id):
         Backups = r.get(self.APIURL + "/droplets/" + id + "/Backups",
-                          auth=self.BasicAuth)
+                        auth=self.BasicAuth)
         DropletBackups = Backups.json()
         return DropletBackups
 
-    def DeleteDroplet(self, id):
+    def DestroyDroplet(self, id):
         Delete = r.delete(self.APIURL + "/droplets/" + id, auth=self.BasicAuth)
         return Delete
     # TODO Handle Return Codes 204 is success, 404 droplet not found
+
+    def ListDropletUpgrade(self):
+        Upgrade = r.get(self.APIURL + "/droplet_upgrades", auth=self.BasicAuth)
+        DropletUpgrades = Upgrade.json()
+        return DropletUpgrades
+
+    def RebootDroplet(self, id):
+        command = {"type": "reboot"}
+        Reboot = r.post(self.APIURL + "/droplets/" + id + "/actions", params=command,
+                        auth=self.BasicAuth)
+        DropletReboot = Reboot.json()
+        return DropletReboot
+
+    def DropletPowerControl(self, id, action):
+        command = {"type": action}
+        Dpower = r.post(self.APIURL + "/droplets/" + id + "/actions", params=command,
+                        auth=self.BasicAuth)
+        DropPower = Dpower.json()
+        return DropPower
+    # Valid values for action are "power_cycle" "shutdown" "power_off" "power_on"
+
