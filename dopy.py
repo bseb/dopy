@@ -97,6 +97,14 @@ class Dopy():
         KeyList = Keys.json()
         return KeyList
 
+    def AddKeys(self, name, key):
+        KeyInfo = {"name": name, "public_ley": key}
+        AddKey = r.post(self.APIURL + "account/keys", auth=self.BasicAuth,
+                        headers=self.jsonheaders,
+                        data=json.dumps(KeyInfo))
+        AddedKey = AddKey.json()
+        return AddedKey
+
 
 class DopyError(Exception):
     pass
